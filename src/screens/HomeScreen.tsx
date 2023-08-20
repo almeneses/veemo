@@ -2,7 +2,7 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {COLORS} from '../theme/defaultTheme';
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}: any) => {
   return (
     <View style={styles.container}>
       <Text>HomeScreen</Text>
@@ -12,7 +12,7 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.Yellow,
+    backgroundColor: COLORS.Black,
   },
 });
 
