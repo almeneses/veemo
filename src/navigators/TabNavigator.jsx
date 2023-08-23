@@ -7,6 +7,16 @@ import CustomIcon from '../components/CustomIcon';
 
 const Tab = createBottomTabNavigator();
 
+const createTabIcon = ({focused, color, size}) => (
+  <View
+    style={[
+      styles.activeTabBackground,
+      {backgroundColor: focused ? COLORS.Orange : COLORS.White},
+    ]}>
+    <CustomIcon name="video" color={COLORS.White} size={FONTSIZE.s_30} />
+  </View>
+);
+
 const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -24,19 +34,7 @@ const TabNavigator = () => {
         component={HomeScreen}
         options={{
           tabBarShowLabel: false,
-          tabBarIcon: ({focused, color, size}) => (
-            <View
-              style={[
-                styles.activeTabBackground,
-                {backgroundColor: focused ? COLORS.Orange : COLORS.White},
-              ]}>
-              <CustomIcon
-                name="video"
-                color={COLORS.White}
-                size={FONTSIZE.s_30}
-              />
-            </View>
-          ),
+          tabBarIcon: createTabIcon,
         }}
       />
     </Tab.Navigator>
