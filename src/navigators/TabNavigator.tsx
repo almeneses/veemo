@@ -4,18 +4,21 @@ import {StyleSheet, Text, View} from 'react-native';
 import HomeScreen from '../screens/HomeScreen';
 import {COLORS, FONTSIZE, SPACING} from '../theme/defaultTheme';
 import CustomIcon from '../components/CustomIcon';
+import SearchScreen from '../screens/SearchScreen';
 
 const Tab = createBottomTabNavigator();
 
-const createTabIcon = ({focused, color, size}) => (
-  <View
-    style={[
-      styles.activeTabBackground,
-      {backgroundColor: focused ? COLORS.Orange : COLORS.White},
-    ]}>
-    <CustomIcon name="video" color={COLORS.White} size={FONTSIZE.s_30} />
-  </View>
-);
+function createTabIcon(iconName: string) {
+  return ({focused}: {focused: boolean}): JSX.Element => (
+    <View
+      style={[
+        styles.activeTabBackground,
+        {backgroundColor: focused ? COLORS.Orange : COLORS.White},
+      ]}>
+      <CustomIcon name={iconName} color={COLORS.White} size={FONTSIZE.s_30} />
+    </View>
+  );
+}
 
 const TabNavigator = () => {
   return (
@@ -32,10 +35,12 @@ const TabNavigator = () => {
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={{
-          tabBarShowLabel: false,
-          tabBarIcon: createTabIcon,
-        }}
+        options={{tabBarShowLabel: false, tabBarIcon: createTabIcon('video')}}
+      />
+      <Tab.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{tabBarShowLabel: false, tabBarIcon: createTabIcon('search')}}
       />
     </Tab.Navigator>
   );
