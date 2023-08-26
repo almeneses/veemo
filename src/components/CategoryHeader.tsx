@@ -1,8 +1,10 @@
-import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, Text} from 'react-native';
 import {COLORS, FONTFAMILY, FONTSIZE, SPACING} from '../theme/defaultTheme';
 
-const CategoryHeader = ({title}: {title: string}): JSX.Element => (
+type CategoryHeaderProps = {title: string};
+
+const CategoryHeader = ({title}: CategoryHeaderProps): JSX.Element => (
   <Text style={styles.text}>{title}</Text>
 );
 
