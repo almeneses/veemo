@@ -5,20 +5,23 @@ import HomeScreen from '../screens/HomeScreen';
 import {COLORS, FONTSIZE, SPACING} from '../theme/defaultTheme';
 import CustomIcon from '../components/CustomIcon';
 import SearchScreen from '../screens/SearchScreen';
+import TicketScreen from '../screens/TicketScreen';
+import UserScreen from '../screens/UserScreen';
 
 const Tab = createBottomTabNavigator();
 
-function createTabIcon(iconName: string) {
-  return ({focused}: {focused: boolean}): JSX.Element => (
-    <View
-      style={[
-        styles.activeTabBackground,
-        {backgroundColor: focused ? COLORS.Orange : COLORS.White},
-      ]}>
-      <CustomIcon name={iconName} color={COLORS.White} size={FONTSIZE.s_30} />
-    </View>
-  );
-}
+const createTabIcon =
+  (iconName: string) =>
+  ({focused}: {focused: boolean}): JSX.Element =>
+    (
+      <View
+        style={[
+          styles.activeTabBackground,
+          focused && {backgroundColor: COLORS.Orange},
+        ]}>
+        <CustomIcon name={iconName} color={COLORS.White} size={FONTSIZE.s_30} />
+      </View>
+    );
 
 const TabNavigator = () => {
   return (
@@ -41,6 +44,16 @@ const TabNavigator = () => {
         name="Search"
         component={SearchScreen}
         options={{tabBarShowLabel: false, tabBarIcon: createTabIcon('search')}}
+      />
+      <Tab.Screen
+        name="Ticket"
+        component={TicketScreen}
+        options={{tabBarShowLabel: false, tabBarIcon: createTabIcon('ticket')}}
+      />
+      <Tab.Screen
+        name="User"
+        component={UserScreen}
+        options={{tabBarShowLabel: false, tabBarIcon: createTabIcon('user')}}
       />
     </Tab.Navigator>
   );
