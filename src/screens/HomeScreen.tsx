@@ -2,18 +2,38 @@ import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
   Dimensions,
+  FlatList,
   ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
   View,
 } from 'react-native';
-import {COLORS, FONTSIZE, SPACING} from '../theme/defaultTheme';
+import {COLORS, SPACING} from '../theme/defaultTheme';
 import InputHeader from '../components/InputHeader';
-import {getData} from '../api/movies';
-import {popularMoviesUrl} from '../api/apiValues';
+import {getNowPlayingMovies} from '../api/movies';
+import {moviePosterPath} from '../api/apiValues';
+import CategoryHeader from '../components/CategoryHeader';
+import MovieCard from '../components/MovieCard';
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
+
+const renderSecondaryItem =
+  (length: number, onPress: () => any) =>
+  ({item, index}: {item: any; index: number}): JSX.Element =>
+    (
+      <MovieCard
+        title={item.original_title}
+        type={''}
+        imagePath={moviePosterPath(342, item.poster_path)}
+        width={width / 3}
+        isFirst={!index}
+        isLast={index === length - 1}
+        hasSideMargins={true}
+        onPress={onPress}
+      />
+    );
+
+const keyExtractor = ({id}: {original_title: string; id: string}): string => id;
 
 const HomeScreen = ({navigation}: any) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any>(null);
@@ -21,12 +41,13 @@ const HomeScreen = ({navigation}: any) => {
   const [upcomingMovies, setUpcomingMovies] = useState<any>(null);
 
   const searchMovie = (): void => navigation.navigate('Search');
+  const onMovieCardPress = () => navigation.navigate('MovieDetails');
 
   useEffect(() => {
-    const getPopularMovies = async () =>
-      setNowPlayingMovies({...(await getData(popularMoviesUrl))});
+    const fetchNowPlayingMovies = async (): Promise<void> =>
+      setNowPlayingMovies(await getNowPlayingMovies());
 
-    getPopularMovies();
+    fetchNowPlayingMovies();
   }, []);
 
   const renderMoviesSection = (): JSX.Element => {
@@ -39,10 +60,20 @@ const HomeScreen = ({navigation}: any) => {
     }
 
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={{fontSize: FONTSIZE.s_30, color: COLORS.Orange}}>
-          MOVIES!
-        </Text>
+      <View style={styles.container}>
+        <CategoryHeader title="Now Playing" />
+        <CategoryHeader title="Popular" />
+        <CategoryHeader title="Upcoming" />
+        <FlatList
+          data={nowPlayingMovies}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.containerGap36}
+          renderItem={renderSecondaryItem(
+            nowPlayingMovies.length || 0,
+            onMovieCardPress,
+          )}
+          horizontal
+        />
       </View>
     );
   };
@@ -52,11 +83,13 @@ const HomeScreen = ({navigation}: any) => {
       style={styles.container}
       bounces={false}
       contentContainerStyle={styles.scrollViewContainer}>
-      <StatusBar hidden />
-      <View style={styles.inputHeaderContainer}>
-        <InputHeader onSearch={searchMovie} />
+      <View>
+        <StatusBar hidden />
+        <View style={styles.inputHeaderContainer}>
+          <InputHeader onSearch={searchMovie} />
+        </View>
+        {renderMoviesSection()}
       </View>
-      {renderMoviesSection()}
     </ScrollView>
   );
 };
@@ -80,6 +113,10 @@ const styles = StyleSheet.create({
   inputHeaderContainer: {
     marginHorizontal: SPACING.s_36,
     marginTop: SPACING.s_28,
+  },
+
+  containerGap36: {
+    gap: SPACING.s_28,
   },
 });
 
