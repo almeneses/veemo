@@ -10,5 +10,5 @@ export const searchMovieUrl = (searchTerm: string): string =>
 export const movieDetails = (id: number): string =>
   `https://api.themoviedb.org/3/movie/${id}?api_key=${MOVIE_API_KEY}`;
 
-export const moviePoster = (width: number, posterPath: string) =>
-  `http://image.tmdb.org/t/p/w${width}${posterPath}`;
+export const moviePosterPath = (width: number, posterPath: string) =>
+  `https://image.tmdb.org/t/p/w${width}${posterPath}`;
