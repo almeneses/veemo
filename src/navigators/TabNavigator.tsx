@@ -1,8 +1,9 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import HomeScreen from '../screens/HomeScreen';
+import {StyleSheet, View} from 'react-native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
 import {COLORS, FONTSIZE, SPACING} from '../theme/defaultTheme';
+import HomeScreen from '../screens/HomeScreen';
 import CustomIcon from '../components/CustomIcon';
 import SearchScreen from '../screens/SearchScreen';
 import TicketScreen from '../screens/TicketScreen';
@@ -29,11 +30,7 @@ const TabNavigator = () => {
       screenOptions={{
         tabBarHideOnKeyboard: true,
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: COLORS.Black,
-          borderTopWidth: 0,
-          height: SPACING.s_10 * 10,
-        },
+        tabBarStyle: styles.tabBar,
       }}>
       <Tab.Screen
         name="Home"
@@ -62,8 +59,15 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   activeTabBackground: {
     backgroundColor: COLORS.Black,
-    padding: SPACING.s_18,
-    borderRadius: SPACING.s_18 * 10,
+    padding: SPACING.s_12,
+    borderRadius: SPACING.s_12 * 10,
+  },
+
+  tabBar: {
+    backgroundColor: COLORS.Black,
+    borderTopWidth: 0,
+    height: '10%',
+    maxHeight: SPACING.s_10 * 10,
   },
 });
 
