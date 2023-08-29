@@ -1,4 +1,8 @@
-import {nowPlayingMoviesUrl} from './apiValues';
+import {
+  nowPlayingMoviesUrl,
+  popularMoviesUrl,
+  upcomingMoviesUrl,
+} from './apiValues';
 
 const getData = async (url: string): Promise<any> => {
   try {
@@ -10,3 +14,9 @@ const getData = async (url: string): Promise<any> => {
 
 export const getNowPlayingMovies = async () =>
   (await getData(nowPlayingMoviesUrl)).results;
+
+export const getPopularMovies = async () =>
+  (await getData(popularMoviesUrl)).results;
+
+export const getUpcomingMovies = async () =>
+  (await getData(upcomingMoviesUrl)).results;
