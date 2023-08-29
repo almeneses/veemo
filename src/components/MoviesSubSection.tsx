@@ -1,0 +1,82 @@
+import React from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
+import CategoryHeader from './CategoryHeader';
+import {COLORS, SPACING} from '../theme/defaultTheme';
+import MovieCard from './MovieCard';
+import {moviePosterPath} from '../api/apiValues';
+
+type MoviesSubSectionProps = {
+  title: string;
+  data: any[];
+  onItemPress: () => any;
+};
+
+const {width} = Dimensions.get('window');
+
+const keyExtractor = ({id}: {original_title: string; id: string}): string => id;
+
+const renderSecondaryItem =
+  (length: number, onPress: () => any) =>
+  ({item, index}: {item: any; index: number}): JSX.Element =>
+    (
+      <MovieCard
+        title={item.original_title}
+        type={''}
+        imagePath={moviePosterPath(342, item.poster_path)}
+        width={width / 3}
+        isFirst={!index}
+        isLast={index === length - 1}
+        hasSideMargins={true}
+        onPress={onPress}
+      />
+    );
+
+const MoviesSubSection = ({
+  title,
+  data,
+  onItemPress,
+}: MoviesSubSectionProps) => {
+  return (
+    <View style={styles.container}>
+      <CategoryHeader title={title} />
+      {data ? (
+        <FlatList
+          data={data}
+          keyExtractor={keyExtractor}
+          contentContainerStyle={styles.containerGap36}
+          renderItem={renderSecondaryItem(data?.length || 0, onItemPress)}
+          nestedScrollEnabled={true}
+          horizontal
+        />
+      ) : (
+        <ActivityIndicator
+          size="large"
+          color={COLORS.Orange}
+          style={styles.loading}
+        />
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+  },
+  loading: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+  },
+
+  containerGap36: {
+    gap: SPACING.s_28,
+  },
+});
+
+export default MoviesSubSection;
