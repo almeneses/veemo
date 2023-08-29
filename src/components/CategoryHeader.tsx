@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTFAMILY.poppins_semibold,
     fontSize: FONTSIZE.s_20,
     paddingVertical: SPACING.s_28,
+    paddingHorizontal: SPACING.s_36,
   },
 });
 
