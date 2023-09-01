@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   ActivityIndicator,
-  Dimensions,
+  DimensionValue,
   FlatList,
   StyleSheet,
   View,
@@ -14,32 +14,35 @@ import {moviePosterPath} from '../api/apiValues';
 type MoviesSubSectionProps = {
   title: string;
   data: any[];
+  cardWidth: DimensionValue;
   onItemPress: () => any;
 };
 
-const {width} = Dimensions.get('window');
-
 const keyExtractor = ({id}: {original_title: string; id: string}): string => id;
 
-const renderSecondaryItem =
-  (length: number, onPress: () => any) =>
+const renderMovieCard =
+  (length: number, cardWidth: DimensionValue, onPress: () => any) =>
   ({item, index}: {item: any; index: number}): JSX.Element =>
     (
       <MovieCard
         title={item.original_title}
         type={''}
-        imagePath={moviePosterPath(342, item.poster_path)}
-        width={width / 3}
+        imagePath={moviePosterPath(780, item.poster_path)}
+        width={cardWidth}
         isFirst={!index}
         isLast={index === length - 1}
         hasSideMargins={true}
         onPress={onPress}
+        genres={item.genre_ids.slice(1, 3)}
+        voteAverage={item.vote_average}
+        voteCount={item.vote_count}
       />
     );
 
 const MoviesSubSection = ({
   title,
   data,
+  cardWidth,
   onItemPress,
 }: MoviesSubSectionProps) => {
   return (
@@ -50,7 +53,11 @@ const MoviesSubSection = ({
           data={data}
           keyExtractor={keyExtractor}
           contentContainerStyle={styles.containerGap36}
-          renderItem={renderSecondaryItem(data?.length || 0, onItemPress)}
+          renderItem={renderMovieCard(
+            data?.length || 0,
+            cardWidth,
+            onItemPress,
+          )}
           nestedScrollEnabled={true}
           horizontal
         />

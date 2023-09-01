@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
 
 import {COLORS, SPACING} from '../theme/defaultTheme';
 import {
@@ -9,6 +15,8 @@ import {
 } from '../api/movies';
 import MoviesSubSection from '../components/MoviesSubSection';
 import InputHeader from '../components/InputHeader';
+
+const {width} = Dimensions.get('window');
 
 const HomeScreen = ({navigation}: any) => {
   const [nowPlayingMovies, setNowPlayingMovies] = useState<any>(null);
@@ -49,16 +57,19 @@ const HomeScreen = ({navigation}: any) => {
             title="Now Playing"
             data={nowPlayingMovies}
             onItemPress={onMovieCardPress}
+            cardWidth={width * 0.7}
           />
           <MoviesSubSection
             title="Popular"
             data={popularMovies}
             onItemPress={onMovieCardPress}
+            cardWidth={width / 3}
           />
           <MoviesSubSection
             title="Upcoming"
             data={upcomingMovies}
             onItemPress={onMovieCardPress}
+            cardWidth={width / 3}
           />
         </View>
       </ScrollView>
